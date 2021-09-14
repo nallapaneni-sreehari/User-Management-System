@@ -1,0 +1,114 @@
+ <div class="row">
+     <div class="col-md-12">
+         <div class="main-card mb-3 card">
+             <div class="card-header">Edit Profile
+                 <div class="btn-actions-pane-right">
+                     <div role="group" class="btn-group-sm btn-group">
+                         
+                        <!-- <button class="btn btn-focus">  <i class="metismenu-icon pe-7s-pen"></i> Edit</button>--->
+                     </div>
+                 </div>
+             </div><br>
+           
+
+ 
+             <div class="inputs">
+                <div class="row">
+                
+                    <div class="col">
+                         <div class="input">
+                            <input type="text" name="name"  ngModel required #name="ngModel"/>
+                            <label for="name">
+                                Name
+                            </label>
+                            <span *ngIf="!name.valid && name.touched"class="help-block">Name Field Cannot be Empty!</span>
+                        </div>
+                    </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="col">
+                        <div class="input">
+                            <input type="text" name="email"  ngModel required email #email="ngModel"/>
+                            <label for="email">
+                                Email
+                            </label>
+                            <span *ngIf="!email.valid && email.touched"class="help-block">Please Enter Valid Email</span>
+                        </div>
+                    </div>
+                  </div><br>
+    
+                  <div class="row">
+                
+                    <div class="col">
+                        <div class="input">
+                            <input type="text" name="username"  ngModel required #username="ngModel"/>
+                            <label for="username">
+                                Username
+                            </label>
+                            <span *ngIf="!username.valid && username.touched"class="help-block">Username Field Cannot be Empty!</span>
+                        </div>
+                    </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="col">
+                        <div class="input">
+                            <input type="password" name="password"  ngModel required #password="ngModel"/>
+                            <label for="password">
+                                Password
+                            </label>
+                            <span *ngIf="!password.valid && password.touched"class="help-block">Password Field Cannot be Empty!</span>
+                        </div>
+                    </div>
+                  </div><br>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="input">
+                             <input type="text" name="phone"  ngModel required #phone="ngModel"/>
+                             <label for="phone">
+                                 Phone
+                             </label>
+                             <span *ngIf="!phone.valid && phone.touched"class="help-block">Phone Field Cannot be Empty!</span>
+                         </div>
+                     </div>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="col">
+                       <div class="input">
+                            <input type="text" name="address"  ngModel required #address="ngModel"/>
+                            <label for="address">
+                                Address
+                            </label>
+                            <span *ngIf="!address.valid && address.touched"class="help-block">Address Field Cannot be Empty!</span>
+                        </div>
+                    </div>
+                  </div><br>
+                  
+                <div class="row">
+                    <div class="col">
+                        <div class="input">
+                             <input type="text" name="country"  ngModel required #country="ngModel"/>
+                             <label for="country">
+                                 Country
+                             </label>
+                             <span *ngIf="!country.valid && country.touched"class="help-block">Country Field Cannot be Empty!</span>
+                         </div>
+                     </div>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="col">
+                       <div class="input">
+                            <input type="text" name="language"  ngModel required #language="ngModel"/>
+                            <label for="language">
+                                Language
+                            </label>
+                            <span *ngIf="!language.valid && language.touched"class="help-block">Language Field Cannot be Empty!</span>
+                        </div>
+                    </div>
+                  </div><br>
+            
+            </div>
+            
+            <div class="col-12">
+                <button class="btn btn-primary" type="submit">Update Details</button>
+              </div>
+
+
+           <br>
+         </div>
+     </div>
+ </div>

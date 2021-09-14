@@ -1,0 +1,54 @@
+<div class="app-page-title">
+    <h2>Personal Informations</h2>
+ </div>   
+
+ <div class="row">
+     <div class="col-md-12">
+         <div class="main-card mb-3 card">
+             <div class="card-header">Profile
+                 <div class="btn-actions-pane-right">
+                     
+                     <div role="group" class="btn-group-sm btn-group">
+                         
+                        <!-- <button class="btn btn-focus">  <i class="metismenu-icon pe-7s-pen"></i> Edit</button>--->
+                     </div>
+                 </div>
+             </div>
+             <div class="table-responsive">
+                 <table class="align-middle table table-borderless">
+                     <thead>
+                     <tr>
+                         <th class="text-center">#Employee Id</th>
+                         <th class="text-center">Name</th>
+                         <th class="text-center">Email</th>
+                         <th class="text-center">Username</th>
+                         <th class="text-center">Phone</th>
+                         <th class="text-center">Job</th>
+                         <th class="text-center">Salary</th>
+                         <th class="text-center">Status</th>
+                        
+                         
+                     </tr>
+                     </thead>
+                     <tbody>
+                     <tr>
+                        <td class="text-center text-muted" *ngFor="let user of userdetailsarray">{{user.id}}</td>
+                        <td class="text-center text-muted" *ngFor="let user of userdetailsarray">{{user.ename}}</td>
+                        <td class="text-center text-muted" *ngFor="let user of userdetailsarray">{{user.email}}</td>
+                        <td class="text-center text-muted" *ngFor="let user of userdetailsarray">{{user.username}}</td>
+                        <td class="text-center text-muted" *ngFor="let user of userdetailsarray">{{user.phone}}</td>
+                        <td class="text-center text-muted" *ngFor="let user of userdetailsarray">{{user.job}}</td>
+                        <td class="text-center text-muted" *ngFor="let user of userdetailsarray">{{user.salary}}</td>
+                        <td class="text-center text-muted" *ngFor="let user of userdetailsarray">{{user.status}}</td>
+                         
+                        
+                     </tr>
+                
+                     
+                     </tbody>
+                 </table>
+             </div>
+           
+         </div>
+     </div>
+ </div>

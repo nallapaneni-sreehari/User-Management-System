@@ -1,0 +1,62 @@
+<form (ngSubmit)="onSubmit(userform)" #userform="ngForm">
+    <div class="container">
+
+        <h2>Tata Elxsi<span><i class="fa fa-linkedin-square" aria-hidden="true"></i></span></h2>
+        <div class="intro-text">
+            <h1>Sign up</h1>
+           </div>
+        <b>Create an account!</b>
+       
+        <div class="inputs">
+            <div class="row">
+            
+                <div class="col">
+                     <div class="input">
+                        <input type="text" name="name"  ngModel required #name="ngModel"/>
+                        <label for="name">
+                            Name
+                        </label>
+                        <span *ngIf="!name.valid && name.touched"class="help-block">Name Field Cannot be Empty!</span>
+                    </div>
+                </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="col">
+                    <div class="input">
+                        <input type="text" name="email"  ngModel required email #email="ngModel"/>
+                        <label for="email">
+                            Email
+                        </label>
+                        <span *ngIf="!email.valid && email.touched"class="help-block">Please Enter Valid Email</span>
+                    </div>
+                </div>
+              </div><br>
+
+            <div class="row">
+            
+                <div class="col">
+                    <div class="input">
+                        <input type="password" name="password"  ngModel required #password="ngModel"/>
+                        <label for="password">
+                            Password
+                        </label>
+                        <span *ngIf="!password.valid && password.touched"class="help-block">Password Field Cannot be Empty!</span>
+                    </div>
+                </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="col">
+                   <div class="input">
+                        <input type="text" name="phone"  ngModel required #phone="ngModel"/>
+                        <label for="phone">
+                            Phone
+                        </label>
+                        <span *ngIf="!phone.valid && phone.touched"class="help-block">Phone Field Cannot be Empty!</span>
+                    </div>
+                </div>
+              </div>
+        
+        </div>
+        <a  (click)="move_to_forgot_password()" class="forgot-pass-link">Forgot password?</a>
+    
+        <button type="submit" [disabled]="!userform.valid"> Register</button>
+       
+        <p class="join-link">Registered User? <a (click)="move_to_login()">Sign in</a></p>
+      </div>
+    </form>
