@@ -9,6 +9,12 @@ export class MessagesComponent implements OnInit {
 
   constructor() { }
 
+  public selectedInd: any;
+  public sendMsg:any={
+    to:"",
+    msg:"",
+    errors:""
+  };
   public panelOpenState:boolean=true;
   columnsToDisplay = ['Message', 'From', 'Date', 'Status'];
   expandedElement:any;
@@ -64,8 +70,10 @@ export class MessagesComponent implements OnInit {
     m.status='read';
   }
 
-  onChatSelect(chat:any){
+  onChatSelect(chat:any,i:any){
+    this.selectedInd=i;
     this.selectedChat=[];
+    this.sendMsg.to = chat.from;
     chat.date = Number(new Date(chat.date))/1;
     // this.selectedChat.push(chat);
     for(let m of this.sentMessage){
@@ -82,4 +90,28 @@ export class MessagesComponent implements OnInit {
     }
     console.log("Selected Chat:::", this.selectedChat);
   }
+
+  onSendMessage(){
+    if(!this.sendMsg.msg || this.sendMsg.msg==' '){
+      this.sendMsg.errors=true;
+    }
+    else{
+      let newMsg = {
+        msg:this.sendMsg.msg,
+        to:this.sendMsg.to,
+        date:new Date(),
+        status:'sent',
+        type:'sent',
+      };
+      this.selectedChat.push(newMsg);
+      this.sentMessage.push(newMsg);
+      this.sendMsg.errors=false;
+    }
+    console.log("Sent:::::::::::",this.sentMessage);
+
+
+    console.log("Sending message to..",this.sendMsg);
+    this.sendMsg=[];
+  }
+  
 }

@@ -1,11 +1,11 @@
-<head>
+<!-- <head>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css"
         rel="stylesheet">
 
-</head>
+</head> -->
 <div class="row" style="width: 100%; height:100%">
     <div class="col-md-12">
         <div class="main-card mb-3 card">
@@ -13,9 +13,9 @@
             </div>
             <!-- <h3 class=" text-center">Chatting</h3> -->
             <!-- <div class="messaging"> -->
-                <div class="inbox_msg">
-                    <div class="inbox_people">
-                        <!-- <div class="headind_srch">
+            <div class="inbox_msg">
+                <div class="inbox_people">
+                    <!-- <div class="headind_srch">
                             <div class="recent_heading">
                                 <h4>Chats</h4>
                             </div>
@@ -29,24 +29,23 @@
                                 </div>
                             </div>
                         </div> -->
-                        <div class="inbox_chat">
-                            <div *ngFor="let chat of messages" class="chat_list active_chat" style="cursor: pointer;"
-                                (click)="onChatSelect(chat)">
-                                <div class="chat_people">
-                                    <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png"
-                                            alt="sunil">
-                                    </div>
-                                    <div class="chat_ib">
-                                        <h5>{{chat.from}} <span class="chat_date">{{chat.date | date:'short'}}</span>
-                                        </h5>
-                                        <p>{{chat.msg | slice:0:25}}{{'...'}}</p>
-                                    </div>
+                    <div class="inbox_chat_people">
+                        <div *ngFor="let chat of messages; let i=index" [ngClass]="selectedInd===i?'chat_list selected_chat':'chat_list active_chat'" style="cursor: pointer;"
+                            (click)="onChatSelect(chat,i)">
+                            <div class="chat_people">
+                                <div class="chat_img"> <img src="../../../assets/user.png" alt="sunil">
+                                </div>
+                                <div class="chat_ib">
+                                    <h5>{{chat.from}} <span class="chat_date">{{chat.date | date:'short'}}</span>
+                                    </h5>
+                                    <p>{{chat.msg | slice:0:25}}{{'...'}}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="inbox_chat">
-                        <div class="msg_history">
+                </div>
+                <div class="inbox_chat">
+                    <div class="msg_history">
                         <!-- <div class="outgoing_msg">
                                 <div class="sent_msg">
                                     <p>{{s.msg}}</p>
@@ -56,8 +55,8 @@
                         <div *ngFor="let s of selectedChat">
 
                             <div [ngClass]="s.type=='sent'?'outgoing_msg':'incoming_msg'">
-                                <div *ngIf="s.type=='rec'" class="incoming_msg_img"> <img
-                                        src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                                <div *ngIf="s.type=='rec'" class="incoming_msg_img"> <img src="../../../assets/user.png"
+                                        alt="sunil"> </div>
                                 <div [ngClass]="s.type=='sent'?'sent_msg':'received_msg'">
                                     <div [ngClass]="{'received_withd_msg':s.type=='rec'}">
                                         <p>{{s.msg}}</p>
@@ -70,15 +69,20 @@
                             Select chat to Display Messages.
                         </div>
                     </div>
-                    <div class="type_msg">
+                    <div class="type_msg" *ngIf="selectedChat.length != 0">
                         <div class="input_msg_write">
-                            <input type="text" class="write_msg" placeholder="Type a message" />
-                            <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o"
-                                    aria-hidden="true"></i></button>
+                            <input type="text" class="write_msg" [placeholder]="sendMsg.errors? 'Message cannot be blank' : 'Type Message'" 
+                            [(ngModel)]="sendMsg.msg" #messagetosend="ngModel" minlength="1" (keyup.enter)="onSendMessage()"/>
+                            <!-- <div *ngIf="sendMsg.errors==true;">
+                                <p *ngIf="sendMsg.errors==true;">Message can't be blank</p>
+                            </div> -->
+                            <button class="msg_send_btn" type="submit" (click)="onSendMessage()">
+                                <img src="../../../assets/msg.jpg" width="30" height="30">
+                            </button>
                         </div>
                     </div>
-                    </div>
                 </div>
+            </div>
 
             <!-- </div> -->
         </div>

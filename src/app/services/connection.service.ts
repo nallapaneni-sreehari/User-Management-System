@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
 
 
 @Injectable()
@@ -12,13 +13,19 @@ export class ConnectionService {
   constructor(private http:HttpClient) { 
 
   }
-
+  public API_URL = 'http://localhost:20788/api/employees';
   
-    public API=this.http.get<any>('http://localhost:20788/api/employees')
+  public API=this.http.get<any>(this.API_URL);
   
 
 setName(name: string){
   this.Ename=name;
+}
+
+onRegister(params: any):Observable<any>{
+  // let data={status:'success'};
+  // return of(data);
+  return this.http.post(this.API_URL+'register',params);
 }
 
 }
