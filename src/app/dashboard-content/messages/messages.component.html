@@ -60,7 +60,7 @@
                                 <div [ngClass]="s.type=='sent'?'sent_msg':'received_msg'">
                                     <div [ngClass]="{'received_withd_msg':s.type=='rec'}">
                                         <p>{{s.msg}}</p>
-                                        <span class="time_date">{{s.date | date:'short'}}</span>
+                                        <span class="time_date">{{s.date | date:'medium'}}</span>
                                     </div>
                                 </div>
                             </div>
