@@ -18,10 +18,13 @@ import { HomeComponent } from './dashboard-content/home/home.component';
 import { EditProfileComponent } from './dashboard-content/edit-profile/edit-profile.component';
 import { FeedbackComponent } from './dashboard-content/feedback/feedback.component';
 import { MessagesComponent } from './dashboard-content/messages/messages.component';
-import {MatCardModule} from '@angular/material/card';
+import { MatSelectCountryModule } from "@angular-material-extensions/select-country";
+import {MatSelectModule} from '@angular/material/select';
+
+// import {MatCardModule} from '@angular/material/card';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatExpansionModule} from '@angular/material/expansion';
-import {MatTableModule} from '@angular/material/table';
+// import {MatExpansionModule} from '@angular/material/expansion';
+// import {MatTableModule} from '@angular/material/table';
 
 
 
@@ -41,15 +44,17 @@ import {MatTableModule} from '@angular/material/table';
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes),
+    MatSelectCountryModule.forRoot('de'),
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     FontAwesomeModule,
-    MatCardModule,
+    MatSelectModule,
+    // MatCardModule,
     BrowserAnimationsModule,
-    MatExpansionModule,
-    MatTableModule
+    // MatExpansionModule,
+    // MatTableModule
   ],
   providers: [ConnectionService],
   bootstrap: [AppComponent]

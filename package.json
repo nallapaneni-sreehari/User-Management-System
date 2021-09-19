@@ -10,6 +10,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-material-extensions/select-country": "^5.0.1",
     "@angular/animations": "~12.2.0",
     "@angular/cdk": "^12.2.5",
     "@angular/common": "~12.2.0",
@@ -25,8 +26,10 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "bootstrap": "^5.1.1",
     "font-awesome": "^4.7.0",
+    "fs": "0.0.1-security",
     "jquery": "^3.6.0",
     "rxjs": "~6.6.0",
+    "svg-country-flags": "^1.2.10",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },
