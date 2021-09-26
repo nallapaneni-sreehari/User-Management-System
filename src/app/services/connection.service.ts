@@ -29,19 +29,39 @@ onRegister(params: any):Observable<any>{
 }
 
 onSendMessage(params:any):Observable<any>{
-  console.log("Message params", params);
   let obj = {
     "msgFrom": params.msgFrom,
     "msgTo": params.msgTo,
     "msgText": params.msgText,
-    "msgDate": params.msgDate,
-    "msgStatus": "sent"
+    "time": params.msgDate,
   }
-  return this.http.post('http://localhost:5793/api/messages',obj);
+  console.log("Message params", obj);
+
+  return this.http.post('http://localhost:13626/api/Message',obj);
 }
 getAllMessages(params:any):Observable<any>{
-  let name = "sreehari";
-  return this.http.get(`http://localhost:5793/api/messages?name=${name}`);
+  let email = "sreehari";
+  // let email = params.email;
+  return this.http.get('http://localhost:13626/api/Message/'+email);
+}
+editMessage(params:any){
+  // let msgId = params.msgId;
+  let obj = {
+    "msgId": params.msgId,
+    "msgFrom": params.msgFrom,
+    "msgTo": params.msgTo,
+    "msgText": params.msgText,
+    "time": params.time,
+  }
+  console.log("Edit Msg params", obj);
+
+  return this.http.put('http://localhost:13626/api/Message/'+obj.msgId,obj);
+}
+
+deleteMessage(params:any){
+  let msgId = params.msgId;
+  console.log("Deleting msgId::",msgId);
+  return this.http.delete('http://localhost:13626/api/Message/'+msgId);
 }
 
 }

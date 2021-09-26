@@ -66,7 +66,7 @@
                                     <h5 [ngStyle]="{'color':selectedInd===i ? 'white' : '#464646' }">{{chat.name}} 
                                         <span class="chat_date">{{chat.msgDate | date:'short'}}</span>
                                     </h5>
-                                    <p [ngStyle]="{'color':selectedInd===i ? 'white' : '#464646' }">{{chat.msgText | slice:0:25}}{{'...'}}</p>
+                                    <p [ngStyle]="{'color':selectedInd===i ? 'white' : '#464646' }">{{ (chat.msgText.length<25) ? chat.msgText : (chat.msgText | slice:0:25)+'...' }}</p>
                                 </div>
                             </div>
                         </div>
@@ -80,16 +80,29 @@
                                     <span class="time_date"> {{s.date | date:'short'}}</span>
                                 </div>
                             </div> -->
-                        <div *ngFor="let s of selectedChat">
+                        <div *ngFor="let s of selectedChat; let i=index">
 
                             <div [ngClass]="s.msgFrom=='sreehari'?'outgoing_msg':'incoming_msg'">
                                 <div *ngIf="s.msgFrom!='sreehari'" class="incoming_msg_img"> <img src="../../../assets/user.png"
                                         alt="sunil"> </div>
                                 <div [ngClass]="s.msgFrom=='sreehari'?'sent_msg':'received_msg received_withd_msg'">
                                     <!-- <div class="received_withd_msg"> -->
-                                        <p>{{s.msgText}}</p>
-                                        <span class="time_date">{{s.msgDate | date:'medium'}}</span>
-                                    <!-- </div> -->
+                                        <p *ngIf="!s.msgEdit" id="editMsg{{i}}">{{s.msgText}}</p>
+                                        <div *ngIf="s.msgEdit">
+                                            <textarea class="received_withd_msg_input" type="text" placeholder="Edit Message" value="{{s.msgText}}" [(ngModel)]="s.msgText" #msgText="ngModel" autofocus></textarea>
+                                            <button class="msg_edit_btn"(click)="onMessageEdit(s);s.msgEdit=''">
+                                                <img src="../../../assets/edit.png" width="30" height="30">
+                                            </button>
+                                        </div>
+                                    
+                                        <div *ngIf="s.msgFrom=='sreehari'">
+                                            <span *ngIf="!(s.edit || s.delete)" style="cursor: pointer" (click)="onEditRequest('dots',s)">...</span>
+                                            <a href="javascript:void(0);" *ngIf="s.edit && s.editTimeLimit > currentDate" (click)="onEditRequest('editbox',s)"> Edit</a>&nbsp;
+                                            <a href="javascript:void(0);" *ngIf="s.delete" (click)="onMessageDelete(s)"> Delete</a>&nbsp;
+                                            <span *ngIf="(s.edit || s.delete)" style="cursor: pointer" (click)="s.edit=''; s.delete=''; s.msgEdit=''">...</span>
+                                        </div>
+
+                                        <span class="time_date">{{s.msgDate | date:'medium'}}</span> 
                                 </div>
                             </div>
                         </div>
