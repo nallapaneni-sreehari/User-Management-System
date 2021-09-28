@@ -19,8 +19,10 @@
                 <!-- <button style="margin-left: 980px;" (click)="writeMsg =! writeMsg;selectedChat=[];selectedInd=''">New Chat</button> -->
             </div>
             <div class="chat" *ngIf="writeMsg">
-                <input class="ipbox" type="text" required placeholder="Enter Username to send message to" [(ngModel)]="sendMsg.to" #msgTo="ngModel" >
+                <input class="ipbox" type="text" required placeholder="Enter Username to send message to"
+                (change)="checkEmailExists(msgTo)" [(ngModel)]="sendMsg.to" #msgTo="ngModel" >
                 <p *ngIf="(msgTo.touched || msgTo.dirty) && msgTo.invalid">Please Type Username.</p>
+                <p *ngIf="msgTo.valid && sendMsg.errosMsg">{{sendMsg.errosMsg}}</p>
                 <textarea class="txt" rows="4" cols="50" 
                 [placeholder]="sendMsg.errors? 'Message cannot be blank' : 'Type Message'"
                 [(ngModel)]="sendMsg.msg" #msgText="ngModel" minlength="1" required

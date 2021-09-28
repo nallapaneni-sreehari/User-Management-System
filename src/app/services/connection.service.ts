@@ -13,7 +13,7 @@ export class ConnectionService {
   constructor(private http:HttpClient) { 
 
   }
-  public API_URL = 'http://localhost:20788/api/employees/';
+  public API_URL = 'http://104.251.211.189/api/';
   
   public API=this.http.get<any>(this.API_URL);
   
@@ -37,12 +37,12 @@ onSendMessage(params:any):Observable<any>{
   }
   console.log("Message params", obj);
 
-  return this.http.post('http://localhost:13626/api/Message',obj);
+  return this.http.post(this.API_URL+'Message',obj);
 }
 getAllMessages(params:any):Observable<any>{
   let email = "sreehari";
   // let email = params.email;
-  return this.http.get('http://localhost:13626/api/Message/'+email);
+  return this.http.get(this.API_URL+'Message/'+email);
 }
 editMessage(params:any){
   // let msgId = params.msgId;
@@ -55,15 +55,25 @@ editMessage(params:any){
   }
   console.log("Edit Msg params", obj);
 
-  return this.http.put('http://localhost:13626/api/Message/'+obj.msgId,obj);
+  return this.http.put(this.API_URL+'Message/'+obj.msgId,obj);
 }
 
 deleteMessage(params:any){
   let msgId = params.msgId;
   console.log("Deleting msgId::",msgId);
-  return this.http.delete('http://localhost:13626/api/Message/'+msgId);
+  return this.http.delete(this.API_URL+'Message/'+msgId);
 }
 
+checkEmail(email:any){
+  console.log("Email::::",email)
+  let params=
+  {
+    "Email":email
+  }
+  // return this.http.post(this.API_URL+'Authentication/EmailCheck',params);
+  return this.http.post(this.API_URL+'Authentication/EmailCheck',params);
+  
+}
 }
 
 export class User {

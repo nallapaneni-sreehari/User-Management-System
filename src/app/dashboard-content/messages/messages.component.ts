@@ -14,10 +14,12 @@ export class MessagesComponent implements OnInit {
   public selectedInd: any;
   public writeMsg:any=false;
   public editMsg:any=false;
+  
   public sendMsg:any={
     to:"",
     msg:"",
-    errors:""
+    errors:"",
+    errosMsg:""
   };
   public panelOpenState:boolean=true;
   // columnsToDisplay = ['Message', 'From', 'Date', 'Status'];
@@ -137,15 +139,18 @@ export class MessagesComponent implements OnInit {
           this.selectedInd = this.messages.indexOf(this.messages.find((o:any) => o.name === data.name));
           console.log("this.selectedInd:::",this.selectedInd, this.messages);
         }
+      },
+      error=>{
+        console.log("Failed to send Message", error);
       });
       // this.sentMessage.push(newMsg);
 
       this.sendMsg.errors=false;
+      console.log("Sent:::::::::::",this.selectedChat);
+      console.log("Sending message to..",this.sendMsg);
+      this.sendMsg.msg="";
+      this.writeMsg = false;
     }
-    console.log("Sent:::::::::::",this.selectedChat);
-    console.log("Sending message to..",this.sendMsg);
-    this.sendMsg.msg="";
-    this.writeMsg = false;
   }
 
   getAllMessages(){
@@ -175,6 +180,9 @@ export class MessagesComponent implements OnInit {
       //Dividing Messages based on sent and received by User
       this.prepareChats();
 
+    },
+    error=>{
+      console.log("Failed to Fetch Messages", error);
     });
 
   }
@@ -215,6 +223,9 @@ export class MessagesComponent implements OnInit {
       if(response && response.status=='success'){
         // this.getAllMessages();
       }
+    },
+    error=>{
+      console.log("Failed to Edit Message", error);
     });
     this.prepareChats();
 
@@ -236,6 +247,9 @@ export class MessagesComponent implements OnInit {
       if(response && response.status=='success'){
         console.log("Deteled Message..!")
       }
+    },
+    error=>{
+      console.log("Failed to Delete Message", error);
     });
     this.prepareChats();
   }
@@ -250,5 +264,21 @@ export class MessagesComponent implements OnInit {
       s.msgEdit=true;
     }
     
+  }
+
+  checkEmailExists(email:any){
+    console.log("Email Check:::",email.value);
+    this.service.checkEmail(email.value).subscribe((data:any)=>{
+      console.log("CheckEmail:::",data);
+      if(data && data.Status == 'Success'){
+        this.sendMsg.emailExist=true;
+      }
+      else{
+      this.sendMsg.errosMsg="Please type valid Username.";
+      }
+    },err=>{
+      console.log("CheckEmail:::",err);
+      this.sendMsg.errosMsg="Please type valid Username.";
+    });
   }
 }
