@@ -3,6 +3,7 @@ import { FormControl, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ConnectionService } from '../services/connection.service';
 import { GlobaldataService } from '../services/globaldata.service';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-register',
@@ -27,6 +28,11 @@ export class RegisterComponent implements OnInit {
     language:""
   };
 
+  public status=false;
+  public ErrorStatus=false;
+  public LoadingSpinner=false;
+  public StatusMessage:any;
+
   ngOnInit(): void {
   }
 
@@ -45,18 +51,22 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(signupForm: NgForm) {
-    var name = "";
+    this.LoadingSpinner=true;
+    var username="";
+    // var name = "";
     var email = "";
     var password = "";
+    var address="";
     var phone = "";
     var country = "";
     var continent = "";
     var language = "";
 
-
-    name = signupForm.controls.name.value;
+    username=signupForm.controls.username.value;
+    // name = signupForm.controls.name.value;
     email = signupForm.controls.email.value;
     password = signupForm.controls.password.value;
+    address=signupForm.controls.address.value;
     phone = signupForm.controls.phone.value;
     continent = this.userData.continent;
     country = this.userData.country;
@@ -64,9 +74,11 @@ export class RegisterComponent implements OnInit {
 
 
     let userDetails = {
-      name: name,
+      username:username,
+      // name: name,
       email: email,
       password: password,
+      address:address,
       phone: phone,
       continent:continent,
       country:country,
@@ -74,16 +86,33 @@ export class RegisterComponent implements OnInit {
     }
     // alert(signupForm.value);
     console.log("Form:::", userDetails)
-    this.service.onRegister(userDetails).subscribe(data => {
-      if (data.status == 'success') {
-        console.log("User Successfully created!");
-        this.router.navigate(['/login']);
-      }
-      else {
-        console.log("Error while creating User!");
-      }
+    this.service
+      .register(username, email, password, continent, country, language, address, phone)
+      .pipe(first())
+      .subscribe({
+        next: data => {
+        console.log(data);
+          this.status=true;
+          this.LoadingSpinner=false;
+          this.StatusMessage="";
+        },
+        error: error => {
+          this.status=false;
+          this.ErrorStatus=true;
+          this.StatusMessage=error.error.massage;
+          this.LoadingSpinner=false;
+        }
+    });
+    // this.service.onRegister(userDetails).subscribe(data => {
+    //   if (data.status == 'success') {
+    //     console.log("User Successfully created!");
+    //     this.router.navigate(['/login']);
+    //   }
+    //   else {
+    //     console.log("Error while creating User!");
+    //   }
 
-    })
+    // })
   }
 
   onContinentChange(){

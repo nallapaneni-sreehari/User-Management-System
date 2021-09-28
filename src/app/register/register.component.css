@@ -95,6 +95,7 @@ button{
     color: #fff;
     font-size: 1rem;
     font-weight: bolder;
+    text-align: center;
 }
 .ng-valid button:hover{
     height: 50px;
@@ -127,14 +128,15 @@ button{
     border: 1px solid red;
   
 }
+
 .columnthree {
     float: left;
     width: 33.33%;
     padding: 10px;
-    height: 300px; /* Should be removed. Only for demonstration */
+    height: 300px; 
   }
   
-  /* Clear floats after the columns */
+  
   .row:after {
     content: "";
     display: table;

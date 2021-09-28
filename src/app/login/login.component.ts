@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from "@angular/router";
+import {first, map} from 'rxjs/operators';
 
 import { ConnectionService, User } from '../services/connection.service';
 @Component({
@@ -18,6 +19,8 @@ export class LoginComponent implements OnInit {
   DBpassword:any;
   public LoginError = false;
   public LoadingSpinner = false;
+  public body:any;
+  public ServerError=false;
   
   constructor(private router:Router, public connectionService:ConnectionService) { 
    this.DBemail=connectionService.dbemail;
@@ -43,38 +46,37 @@ export class LoginComponent implements OnInit {
   
   onSubmit(loginForm:NgForm){
     this.LoadingSpinner=true;
-    var emailTemp="";
-    var passwordTemp="";
-    emailTemp=loginForm.controls.email.value;
-    passwordTemp=loginForm.controls.password.value;
-    for(let user of this.userdetailsarray){
-      if(user.email==emailTemp){
-        this.emailcheck=1;
-        if(user.password==passwordTemp){
-          this.passwordcheck=1;
-          this.connectionService.setName(user.ename);
-        
-        }
-        
-      } 
-    
+    var username=loginForm.controls.UserName.value;
+    var password=loginForm.controls.Password.value;
+  
+  
+    this.connectionService
+        .login(username, password)
+        .pipe(first())
+        .subscribe({
+          next: data => {
+            this.LoginError=false;
+            this.ServerError=false;
+            this.router.navigateByUrl('/dashboard');
+            this.LoadingSpinner=false;
+            
+          },
+          error: error => {
+            if(error.status==404){
+              this.LoadingSpinner=false;
+            this.LoginError=false;
+            this.ServerError=true;
+            }
+            else{
+            this.ServerError=false;
+            this.LoadingSpinner=false;
+            this.LoginError=true;
+            }
+          }
+      });
+       
+   
       
     }
-
-    if(this.emailcheck>0&&this.passwordcheck>0){
-     
-      this.router.navigateByUrl('/dashboard');
-    }
-    else{
-           
-         this.LoginError=true;
-         this.LoadingSpinner=false;
-         
-       }
   
-     
-
-    
-  }
-
 }

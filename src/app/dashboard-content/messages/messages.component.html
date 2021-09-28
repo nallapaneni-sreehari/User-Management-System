@@ -22,7 +22,7 @@
                 <input class="ipbox" type="text" required placeholder="Enter Username to send message to"
                 (change)="checkEmailExists(msgTo)" [(ngModel)]="sendMsg.to" #msgTo="ngModel" >
                 <p *ngIf="(msgTo.touched || msgTo.dirty) && msgTo.invalid">Please Type Username.</p>
-                <p *ngIf="msgTo.valid && sendMsg.errosMsg">{{sendMsg.errosMsg}}</p>
+                <p *ngIf="msgTo.valid && sendMsg.errorMsg">{{sendMsg.errorMsg}}</p>
                 <textarea class="txt" rows="4" cols="50" 
                 [placeholder]="sendMsg.errors? 'Message cannot be blank' : 'Type Message'"
                 [(ngModel)]="sendMsg.msg" #msgText="ngModel" minlength="1" required
@@ -33,14 +33,18 @@
                     <p>Message can't be blank.</p>
                 </div>
                 <button class="btn" [disabled]="msgText.invalid || msgTo.invalid" (click)="onSendMessage();">Send Message</button>
-                <button class="btn" *ngIf="msgText.invalid || msgTo.invalid" (click)="writeMsg = false">Cancel</button>
+                <button class="btn" *ngIf="msgText.invalid || msgTo.invalid || sendMsg.errorMsg" (click)="writeMsg = false">Cancel</button>
             </div>
 
             <!-- <h3 class=" text-center">Chatting</h3> -->
             <!-- <div class="messaging"> -->
-                <div *ngIf="!messages || messages.length<=0">
+                <div *ngIf="!messagesLoading&&(!messages || messages.length<=0)">
                     <h2 style="margin:35px; font-family: inherit;">No Chats found, Start New Chat Above.</h2>
                 </div>
+                <div *ngIf="messagesLoading">
+                    <h2 style="margin:35px; font-family: inherit;">Loading Chats Please Wait...</h2>
+                </div>
+
             <div class="inbox_msg" *ngIf="messages.length>0">
                 <div class="inbox_people">
                     <!-- <div class="headind_srch">
@@ -84,10 +88,10 @@
                             </div> -->
                         <div *ngFor="let s of selectedChat; let i=index">
 
-                            <div [ngClass]="s.msgFrom=='sreehari'?'outgoing_msg':'incoming_msg'">
-                                <div *ngIf="s.msgFrom!='sreehari'" class="incoming_msg_img"> <img src="../../../assets/user.png"
+                            <div [ngClass]="s.msgFrom==CurrentUser?'outgoing_msg':'incoming_msg'">
+                                <div *ngIf="s.msgFrom!=CurrentUser" class="incoming_msg_img"> <img src="../../../assets/user.png"
                                         alt="sunil"> </div>
-                                <div [ngClass]="s.msgFrom=='sreehari'?'sent_msg':'received_msg received_withd_msg'">
+                                <div [ngClass]="s.msgFrom==CurrentUser?'sent_msg':'received_msg received_withd_msg'">
                                     <!-- <div class="received_withd_msg"> -->
                                         <p *ngIf="!s.msgEdit" id="editMsg{{i}}">{{s.msgText}}</p>
                                         <div *ngIf="s.msgEdit">
@@ -97,7 +101,7 @@
                                             </button>
                                         </div>
                                     
-                                        <div *ngIf="s.msgFrom=='sreehari'">
+                                        <div *ngIf="s.msgFrom==CurrentUser">
                                             <span *ngIf="!(s.edit || s.delete)" style="cursor: pointer" (click)="onEditRequest('dots',s)">...</span>
                                             <a href="javascript:void(0);" *ngIf="s.edit && s.editTimeLimit > currentDate" (click)="onEditRequest('editbox',s)"> Edit</a>&nbsp;
                                             <a href="javascript:void(0);" *ngIf="s.delete" (click)="onMessageDelete(s)"> Delete</a>&nbsp;

@@ -11,15 +11,16 @@ export class MessagesComponent implements OnInit {
   constructor(private service:ConnectionService) { }
 
   public currentDate = Number(new Date())/1;
+  public messagesLoading=false;
   public selectedInd: any;
   public writeMsg:any=false;
   public editMsg:any=false;
-  
+  public CurrentUser:any;
   public sendMsg:any={
     to:"",
     msg:"",
     errors:"",
-    errosMsg:""
+    errorMsg:""
   };
   public panelOpenState:boolean=true;
   // columnsToDisplay = ['Message', 'From', 'Date', 'Status'];
@@ -55,6 +56,7 @@ export class MessagesComponent implements OnInit {
   public editTimeLimit:any;
   
   ngOnInit(): void {
+    this.CurrentUser = localStorage.getItem('CurrentUser');
     this.getAllMessages();
 
     // setInterval(()=> { this.getAllMessages() }, 1 * 1000);
@@ -112,8 +114,7 @@ export class MessagesComponent implements OnInit {
     }
     else{
       var newMsg:any = {
-        // from:this.service.Ename,
-        msgFrom:"sreehari",
+        msgFrom:this.CurrentUser,
         msgTo:this.sendMsg.to,
         msgText:this.sendMsg.msg,
         msgDate:new Date().toLocaleString(),
@@ -154,9 +155,10 @@ export class MessagesComponent implements OnInit {
   }
 
   getAllMessages(){
+    this.messagesLoading=true;
     this.allMessages=[];
     let params = {
-      username:this.service.Ename
+      username:this.CurrentUser
     }
     this.service.getAllMessages(params).subscribe(data =>{
       if(data && data.length > 0){
@@ -179,11 +181,14 @@ export class MessagesComponent implements OnInit {
 
       //Dividing Messages based on sent and received by User
       this.prepareChats();
+      this.messagesLoading=false;
 
     },
     error=>{
       console.log("Failed to Fetch Messages", error);
+      this.messagesLoading=false;
     });
+    
 
   }
 
@@ -194,12 +199,12 @@ export class MessagesComponent implements OnInit {
     // }
 
     for(let m of this.allMessages){
-      if(m.msgFrom === 'sreehari'){
+      if(m.msgFrom === this.CurrentUser){
         m.name = m.msgTo;
         m.editTimeLimit = Number(new Date(m.msgDate))/1 + 1*60*60*1000
         this.messages.push(m);
       }
-      else if(m.msgTo === 'sreehari'){
+      else if(m.msgTo === this.CurrentUser){
         // if(this.selectedChat.length>0 && obj.msgFrom == m.msgFrom){
         //   this.selectedChat.push(m);
         // }
@@ -267,18 +272,18 @@ export class MessagesComponent implements OnInit {
   }
 
   checkEmailExists(email:any){
-    console.log("Email Check:::",email.value);
+    // console.log("Email Check:::",email.value);
     this.service.checkEmail(email.value).subscribe((data:any)=>{
       console.log("CheckEmail:::",data);
-      if(data && data.Status == 'Success'){
-        this.sendMsg.emailExist=true;
+      if(data && data.status == 'Success'){
+        this.sendMsg.errorMsg="";
       }
       else{
-      this.sendMsg.errosMsg="Please type valid Username.";
+        this.sendMsg.errorMsg="Please type valid Username.";
       }
     },err=>{
       console.log("CheckEmail:::",err);
-      this.sendMsg.errosMsg="Please type valid Username.";
+      this.sendMsg.errorMsg="Please type valid Username.";
     });
   }
 }
