@@ -48,9 +48,11 @@ login(username: string, password: string) {
     );
 } 
 
-register(username: string, email: string, password: string, continent: string, country: string, langauge: string, adress: string, phonenumber: string) {
+// register(username: string, email: string, password: string, continent: string, country: string, langauge: string, adress: string, phonenumber: string) {
+register(username: string, email: string, password: string, continent: string, country: string, Language: string, Address: string, PhoneNumber: string) {
   return this.http
-    .post<any>(environment.baseUrl+"Authentication/Register", { username, email, password, continent, country, langauge, adress, phonenumber })
+    // .post<any>(environment.baseUrl+"Authentication/Register", { username, email, password, continent, country, langauge, adress, phonenumber })
+    .post<any>(environment.baseUrl+"Authentication/Register", { username, email, password, continent, country, Language, Address, PhoneNumber })
     .pipe(
       map((user) => {
     

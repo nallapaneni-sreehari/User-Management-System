@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ConnectionService } from 'src/app/services/connection.service';
+import {AfterViewChecked, ElementRef, ViewChild,} from '@angular/core';
 
 @Component({
   selector: 'app-messages',
@@ -13,6 +14,7 @@ export class MessagesComponent implements OnInit {
   public currentDate = Number(new Date())/1;
   public messagesLoading=false;
   public selectedInd: any;
+  public refreshChat=false;
   public writeMsg:any=false;
   public editMsg:any=false;
   public CurrentUser:any;
@@ -59,7 +61,7 @@ export class MessagesComponent implements OnInit {
     this.CurrentUser = localStorage.getItem('CurrentUser');
     this.getAllMessages();
 
-    // setInterval(()=> { this.getAllMessages() }, 1 * 1000);
+    // setInterval(()=> { this.getAllMessages() }, 5 * 1000);
     // this.prepareChats();  //remove me when working with API
 
     // this.allMessages = this.messages.map((item:any, i:any) => Object.assign({}, item, this.sentMessage[i]));
@@ -84,9 +86,9 @@ export class MessagesComponent implements OnInit {
 
   onChatSelect(chat:any,i:any){
     console.log("Chat Selected:::",chat, this.currentDate);
+    this.selectedChat=[];
     this.writeMsg = false;
     this.selectedInd=i;
-    this.selectedChat=[];
     this.sendMsg.to = chat.name;
     chat.msgDate = Number(new Date(chat.msgDate))/1;
     // this.selectedChat.push(chat);
@@ -104,13 +106,13 @@ export class MessagesComponent implements OnInit {
     }
 
     this.selectedChat.sort((a:any, b:any) => Number(a.msgDate) - Number(b.msgDate));
-
     console.log("Selected Chat:::", this.selectedChat);
   }
 
   onSendMessage(){
-    if(!this.sendMsg.msg || this.sendMsg.msg==' '){
+    if(!this.sendMsg.msg || this.sendMsg.msg==' ' || !this.sendMsg.to){
       this.sendMsg.errors=true;
+      console.log("Missing Message Body or To Address");
     }
     else{
       var newMsg:any = {
@@ -139,6 +141,7 @@ export class MessagesComponent implements OnInit {
           this.prepareChats();
           this.selectedInd = this.messages.indexOf(this.messages.find((o:any) => o.name === data.name));
           console.log("this.selectedInd:::",this.selectedInd, this.messages);
+          this.scrollBottom();
         }
       },
       error=>{
@@ -151,12 +154,14 @@ export class MessagesComponent implements OnInit {
       console.log("Sending message to..",this.sendMsg);
       this.sendMsg.msg="";
       this.writeMsg = false;
+      // window.scrollTo(0,document.getElementById("scroll")!.scrollHeight);
     }
   }
 
   getAllMessages(){
     this.messagesLoading=true;
     this.allMessages=[];
+    this.messages=[];
     let params = {
       username:this.CurrentUser
     }
@@ -182,6 +187,7 @@ export class MessagesComponent implements OnInit {
       //Dividing Messages based on sent and received by User
       this.prepareChats();
       this.messagesLoading=false;
+      this.refreshChat=false;
 
     },
     error=>{
@@ -217,7 +223,29 @@ export class MessagesComponent implements OnInit {
     this.messages = [...new Map(this.messages.map((item:any) =>
       [item['name'], item])).values()];
 
+      
     console.log("After::",this.messages);
+    if((this.selectedChat.length<=0 || !this.selectedChat) && this.messages.length>0){
+      this.selectedInd ? this.selectedInd=this.selectedInd : this.selectedInd=0;
+      console.log("First Chat::",this.messages,this.selectedInd);
+      let fChat = this.messages[this.selectedInd];
+      // this.selectedInd=0;
+      this.sendMsg.to = fChat.name;
+      for(let m of this.allMessages){
+        if(m.msgTo == fChat.name){
+          m.msgDate = Number(new Date(m.msgDate))/1;
+          this.selectedChat.push(m);
+        }
+      }
+      for(let m of this.allMessages){
+        if(m.msgFrom == fChat.name){
+          m.msgDate = Number(new Date(m.msgDate))/1;
+          this.selectedChat.push(m);
+        }
+      }
+      this.selectedChat.sort((a:any, b:any) => Number(a.msgDate) - Number(b.msgDate));
+    }
+    
 
   }
 
@@ -285,5 +313,10 @@ export class MessagesComponent implements OnInit {
       console.log("CheckEmail:::",err);
       this.sendMsg.errorMsg="Please type valid Username.";
     });
+  }
+
+  scrollBottom(){
+    const El = document.getElementById('scroll')!;
+    El.scrollTo({top:El.scrollHeight, behavior: 'smooth'});
   }
 }

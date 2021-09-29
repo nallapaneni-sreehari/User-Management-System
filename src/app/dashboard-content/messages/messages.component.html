@@ -10,11 +10,17 @@
     <div class="col-md-12">
         <div class="main-card mb-3 card" style="width: 100%x;">
             <div class="card-header">Chats
+                <div>
+                    <img src="../../../assets/refresh.png" title="Refresh Chats" width="25" height="25" style="cursor: pointer;margin: 0px 0px 1px 4px;"
+                        (click)="refreshChat=true;getAllMessages();selectedChat=[];writeMsg=''">
+                </div>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <!-- <button class="new_chat_btn" (click)="writeMsg =! writeMsg">
                     <img src="../../../assets/newchat.png" width="30" height="30">
                 </button> -->
-                <p style="margin:0px; padding-left: 110px;">New Chat</p>&nbsp;&nbsp;&nbsp;
-                <img src="../../../assets/newchat.png" width="30" height="30" style="cursor: pointer;"
+                <p style="margin:0px;">New Chat</p>&nbsp;&nbsp;&nbsp;
+                <img src="../../../assets/newchat.png" title="Create New Chat" width="30" height="30" style="cursor: pointer;"
                  (click)="writeMsg =! writeMsg;selectedChat=[];selectedInd='';sendMsg.to=''">
                 <!-- <button style="margin-left: 980px;" (click)="writeMsg =! writeMsg;selectedChat=[];selectedInd=''">New Chat</button> -->
             </div>
@@ -41,8 +47,12 @@
                 <div *ngIf="!messagesLoading&&(!messages || messages.length<=0)">
                     <h2 style="margin:35px; font-family: inherit;">No Chats found, Start New Chat Above.</h2>
                 </div>
-                <div *ngIf="messagesLoading">
+                <div *ngIf="messagesLoading && !refreshChat">
                     <h2 style="margin:35px; font-family: inherit;">Loading Chats Please Wait...</h2>
+                </div>
+
+                <div *ngIf="refreshChat && selectedChat.length<=0">
+                    <h2 style="margin:35px; font-family: inherit;">Refreshing Chats...</h2>
                 </div>
 
             <div class="inbox_msg" *ngIf="messages.length>0">
@@ -79,7 +89,7 @@
                     </div>
                 </div>
                 <div class="inbox_chat">
-                    <div *ngIf="!writeMsg" class="msg_history">
+                    <div *ngIf="!writeMsg" id="scroll" #scroll class="msg_history">
                         <!-- <div class="outgoing_msg">
                                 <div class="sent_msg">
                                     <p>{{s.msg}}</p>
@@ -113,9 +123,13 @@
                             </div>
                         </div>
 
-                        <h2 *ngIf="!writeMsg && selectedChat.length<=0" 
-                        style="display:flex; font-family: inherit; align-items:center; justify-content: center; margin: 175px 0px 0px 0px;">
+                        <h2 *ngIf="!writeMsg && selectedChat.length<=0 && !refreshChat"
+                            style="display:flex; font-family: inherit; align-items:center; justify-content: center; margin: 175px 0px 0px 0px;">
                             Select chat to display messages</h2>
+                        
+                        <!-- <h2 *ngIf="refreshChat && selectedChat.length<=0"
+                            style="display:flex; font-family: inherit; align-items:center; justify-content: center; margin: 175px 0px 0px 0px;">
+                            Refreshing Chats...</h2> -->
                         <!-- <div *ngIf="selectedChat.length === 0" class="received_msg" style="padding: 165px; background-color:white">
                             <div>
                                 <form>
